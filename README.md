@@ -8,6 +8,10 @@ To use this extension, your site **MUST** comply with [Twitch Requirements](http
 
 In short, your site must have SSL enabled.
 
+## Preview
+
+- [Images](https://imgur.com/a/3lFMVG7)
+
 ## Install
 
 ```sh

@@ -2,6 +2,8 @@ nearata-embed-twitch:
   admin:
     allowfullscreen: Allow fullscreen
     autoplay: Autoplay
+    permissions:
+      create_twitch: Embed Twitch
   forum:
     modal:
       label:

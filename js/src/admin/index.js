@@ -15,9 +15,12 @@ app.initializers.add('nearata-embed-twitch', app => {
             }
         )
         .registerPermission(
-        {
-            icon: 'fas fa-check',
-            label: 'Can use embed twitch',
-            permission: 'nearata.embed-twitch.can_use'
-        }, 'start', 95);
+            {
+                icon: 'fas fa-check',
+                label: app.translator.trans('nearata-embed-twitch.admin.permissions.create_twitch'),
+                permission: 'nearata.embed-twitch.can_use',
+                tagScoped: true
+            },
+            'start'
+        );
 });

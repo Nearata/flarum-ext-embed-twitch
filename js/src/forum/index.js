@@ -1,14 +1,24 @@
 import { extend } from 'flarum/common/extend';
-
-import Button from 'flarum/forum/components/Button';
+import app from 'flarum/forum/app';
+import Button from 'flarum/common/components/Button';
 import CommentPost from 'flarum/forum/components/CommentPost';
 import TextEditor from 'flarum/forum/components/TextEditor';
 
+import load from 'external-load';
 import EmbedTwitchModal from './components/EmbedTwitchModal';
 
-app.initializers.add('nearata-embed-twitch', app => {
-    let loaded = false;
+let loaded = false;
+const addResources = async () => {
+    if (loaded) {
+        return;
+    }
 
+    await load.js('https://embed.twitch.tv/embed/v1.js');
+
+    loaded = true;
+}
+
+app.initializers.add('nearata-embed-twitch', () => {
     const loadPlayers = containers => {
         for (const p of containers) {
             const id = p.id;
@@ -54,25 +64,14 @@ app.initializers.add('nearata-embed-twitch', app => {
         const containers = this.element.querySelectorAll('.embed-twitch-container');
 
         if (containers.length) {
-            const initPlayer = new Promise(resolve => {
-                if (loaded) {
-                    const interval = setInterval(async () => {
-                        if (window.Twitch) {
-                            clearInterval(interval);
-                            resolve();
-                        }
-                    }, 1000);
-                } else {
-                    loaded = true;
-                    const script = document.createElement('script');
-                    script.src = 'https://embed.twitch.tv/embed/v1.js';
-                    script.async = true;
-                    script.onload = resolve;
-                    document.body.appendChild(script);
-                }
-            });
-
-            initPlayer.then(() => loadPlayers(containers));
+            addResources().then(() => {
+                const interval = setInterval(() => {
+                    if (window.Twitch) {
+                        loadPlayers(containers);
+                        clearInterval(interval);
+                    }
+                }, 250);
+            })
         }
     });
 });

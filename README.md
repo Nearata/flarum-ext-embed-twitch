@@ -1,5 +1,7 @@
 # Embed Twitch
 
+![supports](https://flarum-badge-api.davwheat.dev/v1/compat-latest/nearata/flarum-ext-embed-twitch)
+
 > A [Flarum](http://flarum.org) extension. Allow users to embed content from Twitch.TV.
 
 ## Requirements

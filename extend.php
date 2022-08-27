@@ -5,9 +5,9 @@ namespace Nearata\EmbedTwitch;
 use Flarum\Extend;
 use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Post\Event\Saving as PostSaving;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use s9e\TextFormatter\Configurator;
+use Nearata\EmbedTwitch\Api\Serializer\ExtendForumSerializer;
+use Nearata\EmbedTwitch\Formatter\AddTwitchBBCode;
+use Nearata\EmbedTwitch\Listener\PostSavingListener;
 
 return [
     (new Extend\Frontend('forum'))
@@ -20,26 +20,7 @@ return [
     new Extend\Locales(__DIR__ . '/resources/locale'),
 
     (new Extend\Formatter)
-        ->configure(function (Configurator $configurator) {
-            $configurator->BBCodes->addCustom(
-                '[embed-twitch
-                    id="{NUMBER}"
-                    channel="{ANYTHING;optional}"
-                    video="{ANYTHING2;optional}"
-                    collection="{ANYTHING3;optional}"
-                    layout="{ANYTHING4;optional}"
-                ]',
-                '<div
-                    id="embed-twitch-{NUMBER}"
-                    class="embed-twitch-container"
-                    data-channel="{ANYTHING}"
-                    data-video="{ANYTHING2}"
-                    data-collection="{ANYTHING3}"
-                    data-layout="{ANYTHING4}"
-                >
-                </div>'
-            );
-        }),
+        ->configure(AddTwitchBBCode::class),
 
     (new Extend\Settings())
         ->serializeToForum('darkMode', 'theme_dark_mode', 'boolval')
@@ -47,20 +28,8 @@ return [
         ->serializeToForum('embedTwitchAutoplay', 'nearata-embed-twitch.settings.autoplay', 'boolval'),
 
     (new Extend\ApiSerializer(ForumSerializer::class))
-        ->attribute('nearataEmbedTwitchCanCreate', function (ForumSerializer $serializer) {
-            return (bool) $serializer->getActor()->can('nearata.embed-twitch.can_use');
-        }),
+        ->attributes(ExtendForumSerializer::class),
 
     (new Extend\Event)
-        ->listen(PostSaving::class, function(PostSaving $event) {
-            if (Arr::has($event->data, 'attributes.content')) {
-                $content = Arr::get($event->data, 'attributes.content');
-
-                if (!Str::contains($content, 'embed-twitch')) {
-                    return;
-                }
-
-                $event->actor->assertCan('nearata.embed-twitch.can_use');
-            }
-        })
+        ->listen(PostSaving::class, PostSavingListener::class)
 ];

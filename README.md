@@ -1,7 +1,5 @@
 # Embed Twitch
 
-![supports](https://flarum-badge-api.davwheat.dev/v1/compat-latest/nearata/flarum-ext-embed-twitch)
-
 > A [Flarum](http://flarum.org) extension. Allow users to embed content from Twitch.TV.
 
 ## Requirements
@@ -20,20 +18,9 @@ In short, your site must have SSL enabled.
 composer require nearata/flarum-ext-embed-twitch
 ```
 
-## Update
-
-```sh
-composer update nearata/flarum-ext-embed-twitch
-php flarum cache:clear
-```
-
 ## Remove
 
 ```sh
 composer remove nearata/flarum-ext-embed-twitch
 php flarum cache:clear
 ```
-
-## License
-
-Distributed under the MIT license. See [LICENSE](LICENSE) for details.

@@ -3,20 +3,17 @@
     "description": "Allow users to embed content from Twitch.TV.",
     "keywords": [
         "flarum",
-        "twitch",
-        "embedding",
-        "streaming",
-        "live"
+        "twitch"
     ],
     "type": "flarum-extension",
-    "license": "MIT",
+    "license": "Unlicense",
     "require": {
         "flarum/core": "^1.0"
     },
     "authors": [
         {
             "name": "Nearata",
-            "email": "williamdicicco@protonmail.com",
+            "email": "nearata@protonmail.com",
             "role": "Developer"
         }
     ],
